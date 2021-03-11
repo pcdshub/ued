@@ -1,0 +1,10 @@
+hutch: ued
+
+# Locate happi database
+db: /reg/g/pcds/pyps/apps/hutch-python/device_config/db.json
+
+# Hutch-specific imports
+load: ued.beamline
+
+daq_platform:
+  default: 0
