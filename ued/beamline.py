@@ -10,10 +10,9 @@ with safe_load('LCLS-II DAQ'):
     from pcdsdaq.control.control import DaqControl
     from pcdsdaq.control.DaqScan import DaqScan
 
-    # TODO figure out what args to use here
     _control = DaqControl(
-        host='drp-???',
-        platform=2,
+        host='drp-ued-cmp001',
+        platform=7,
         timeout=10000,
         )
 
