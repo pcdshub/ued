@@ -3,7 +3,7 @@
 
 # edit these lines only
 USE_LOCAL="1"
-export CONDA_ENVNAME="pcds-4.0.1"
+export CONDA_ENVNAME="pcds-4.1.1"
 #export CONDA_ENVNAME="dev"
 
 export HUTCH="ued"
