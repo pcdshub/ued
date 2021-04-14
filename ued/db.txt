@@ -1,0 +1,37 @@
+
+The objects referenced in this file are populated by the uedpython
+
+initialization. If you wish to use devices from this file, import
+
+them from ued.db after calling the uedpython startup script.
+
+
+hutch-python last loaded on 2021-04-14 14:49:14.584733
+with the following objects:
+
+RE                   <class 'bluesky.run_engine.RunEngine'>
+bec                  <class 'bluesky.callbacks.best_effort.BestEffortCallback'>
+bp                   <class 'types.SimpleNamespace'>
+bps                  <class 'types.SimpleNamespace'>
+bpp                  <class 'types.SimpleNamespace'>
+calc                 <class 'types.SimpleNamespace'>
+scan_pvs             <class 'pcdsdaq.scan_vars.ScanVars'>
+beam_stats           <class 'pcdsdevices.beam_stats.BeamStats'>
+lcls                 <class 'pcdsdevices.beam_stats.LCLS'>
+archive              <class 'archapp.interactive.EpicsArchive'>
+sim                  <class 'types.SimpleNamespace'>
+logging              <class 'module'>
+safe_load            <class 'function'>
+logger               <class 'logging.Logger'>
+LiveTable            <class 'type'>
+DaqControl           <class 'type'>
+DaqScan              <class 'type'>
+SimpleNamespace      <class 'type'>
+args                 <class 'types.SimpleNamespace'>
+daq                  <class 'psdaq.control.DaqScan.DaqScan'>
+nabs                 <class 'module'>
+Motor                <class 'type'>
+EpicsSignal          <class 'type'>
+sample_pv            <class 'ophyd.signal.EpicsSignal'>
+a                    <class 'hutch_python.utils.IterableNamespace'>
+all_objects          <class 'hutch_python.utils.IterableNamespace'>
