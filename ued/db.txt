@@ -6,7 +6,7 @@ initialization. If you wish to use devices from this file, import
 them from ued.db after calling the uedpython startup script.
 
 
-hutch-python last loaded on 2021-04-14 14:49:14.584733
+hutch-python last loaded on 2021-04-14 19:45:02.484453
 with the following objects:
 
 RE                   <class 'bluesky.run_engine.RunEngine'>
@@ -15,6 +15,7 @@ bp                   <class 'types.SimpleNamespace'>
 bps                  <class 'types.SimpleNamespace'>
 bpp                  <class 'types.SimpleNamespace'>
 calc                 <class 'types.SimpleNamespace'>
+daq                  <class 'pcdsdaq.daq.Daq'>
 scan_pvs             <class 'pcdsdaq.scan_vars.ScanVars'>
 beam_stats           <class 'pcdsdevices.beam_stats.BeamStats'>
 lcls                 <class 'pcdsdevices.beam_stats.LCLS'>
@@ -26,10 +27,7 @@ logger               <class 'logging.Logger'>
 LiveTable            <class 'type'>
 DaqControl           <class 'type'>
 DaqScan              <class 'type'>
-SimpleNamespace      <class 'type'>
-args                 <class 'types.SimpleNamespace'>
-daq                  <class 'psdaq.control.DaqScan.DaqScan'>
-nabs                 <class 'module'>
+err                  <class 'str'>
 Motor                <class 'type'>
 EpicsSignal          <class 'type'>
 sample_pv            <class 'ophyd.signal.EpicsSignal'>

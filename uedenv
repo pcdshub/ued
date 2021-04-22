@@ -3,7 +3,8 @@
 
 # edit these lines only
 USE_LOCAL="1"
-export CONDA_ENVNAME="pcds-4.1.1"
+#export CONDA_ENVNAME="pcds-4.1.1"
+export CONDA_ENVNAME="bsgui-dev"
 #export CONDA_ENVNAME="dev"
 
 export HUTCH="ued"
@@ -29,5 +30,5 @@ if [ -f "${HERE}/../common/dev/hutch-python/bin/hutch-python" ]; then
 fi
 
 export PYTHONPATH="${HERE}:${HERE}/dev/devpath:${HERE}/../common/dev/devpath"
-source pcdsdaq_lib_setup
+#source pcdsdaq_lib_setup
 export CONDA_PROMPT_MODIFIER="(${HUTCH}-${CONDA_ENVNAME})"
