@@ -11,8 +11,8 @@ with safe_load('Settings'):
     LiveTable._FMT_MAP['number'] = 'f'
 
 
-with safe_load('LCLS-II DAQ'):
-    from ued.ued_daq import daq
+with safe_load('LCLS-II get_daq'):
+    from ued.ued_daq_rework import get_daq
 
 
 with safe_load('Motors'):
