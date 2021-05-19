@@ -51,6 +51,7 @@ def pv_scan(detectors, pvname, start, stop, num, events=None):
     mot = PhonyMotor(sig)
     config_in_scan(detectors, [mot], events)
 
+    sig.wait_for_connection()
     return (yield from scan(detectors, sig, start, stop, num))
 
 
@@ -61,4 +62,5 @@ def motor_pv_scan(detectors, pvname, start, stop, num, events=None):
     mot = EpicsMotor(pvname, name=pvname)
     config_in_scan(detectors, [mot], events)
 
+    mot.wait_for_connection()
     return (yield from scan(detectors, mot, start, stop, num))
