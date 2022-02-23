@@ -21,7 +21,7 @@ def get_daq():
     """
     Find the daq object
     """
-    from ued.ued_daq import daq
+    from ued.db import daq
     return daq
 
 

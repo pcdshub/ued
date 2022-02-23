@@ -11,19 +11,9 @@ with safe_load('Settings'):
     LiveTable._FMT_MAP['number'] = 'f'
 
 
-with safe_load('LCLS-II get_daq'):
-    from ued.ued_daq_rework import get_daq
-
-
-with safe_load('Motors'):
-    from pcdsdevices.epics_motor import EpicsMotorInterface as Motor
-    # Motors here
-    # my_motor = Motor('MY:PVNAME', name=my_motor)
-
-
-with safe_load('Unit changes'):
-    # TODO
-    pass
+with safe_load('Disable Scan PVs'):
+    from ued.db import scan_pvs
+    scan_pvs.disable()
 
 
 with safe_load('Standalone PVs'):
