@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# source /reg/g/pcds/pyps/apps/hutch-python/ued/uedenv
+HERE=`dirname $(readlink -f $0)`
+source "${HERE}/uedenv"
+
+# this folder that causes write access troubles when opening the Gui
+DIR=~/.cache/scikit-image
+
+export QSERVER_ZMQ_ADDRESS="tcp://ioc-ued-ccd01:60615"
+
+if [[ -d ${DIR} ]]
+then
+    chmod -R u+w ${DIR}
+fi
+
+bluesky-widgets-demo
