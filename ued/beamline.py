@@ -18,4 +18,22 @@ with safe_load('Disable Scan PVs'):
 
 with safe_load('Standalone PVs'):
     from ophyd import EpicsSignal
-    sample_pv = EpicsSignal('ASTA:AO:BK05:V0001', name='sample_pv')
+    test_pv = EpicsSignal('SIOC:SYS7:ML00:AO023', name='test_pv')
+    XC04S = EpicsSignal('XCOR:AS01:381:BCTRL', name='XC04S')
+    YC04S = EpicsSignal('YCOR:AS01:382:BCTRL', name='YC04S')
+
+
+with safe_load('Motors'):
+    from pcdsdevices.epics_motor import EpicsMotorInterface as Motor
+    LaserDelay1 = Motor('MOTR:AS01:MC06:CH5:MOTOR', name='LaserDelay1')
+    LaserDelay2 = Motor('MOTR:AS01:MC06:CH6:MOTOR', name='LaserDelay2')
+    x1 = Motor('MOTR:AS01:MC01:CH3:MOTOR', name='1st_X')
+    y1 = Motor('MOTR:AS01:MC01:CH4:MOTOR', name='1st_Y')
+
+
+with safe_load('Basic plans'):
+    from ued.db import bp
+    from .plans import pv_scan, motor_pv_scan
+    bp.pv_scan = pv_scan
+    bp.motor_pv_scan = motor_pv_scan
+
