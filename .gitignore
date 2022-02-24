@@ -2,7 +2,7 @@ dev
 logs
 
 # Ignore generated database file
-xcs/db.txt
+ued/db.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
