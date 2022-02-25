@@ -3,5 +3,5 @@ from pathlib import Path
 from hutch_python.load_conf import load
 
 
-objs = load(str(Path(__file__).parent.parent.parent / 'conf.yml'))
+objs = load('/cds/home/z/zlentz/github/ued/conf.yml')
 globals().update(**objs)

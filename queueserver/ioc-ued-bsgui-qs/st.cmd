@@ -1,11 +1,12 @@
 #!/bin/bash
-source /cds/group/pcds/pyps/apps/hutch-python/ued/uedenv
+export QS_STARTUP_DIR="$(readlink -f $(dirname ${BASH_SOURCE[0]}))"
+source "${QS_STARTUP_DIR}/../../uedenv"
 
 # Why are these set to the wrong numbers in startup somewhere?
 export EPICS_CA_SERVER_PORT=5064
 export EPICS_CA_REPEATER_PORT=5065
 
-export QS_STARTUP_DIR=/cds/group/pcds/pyps/apps/hutch-python/ued/queueserver/ioc-ued-bsgui-qs
+export MPLBACKEND="agg"
 
 cd "${QS_STARTUP_DIR}"
 
