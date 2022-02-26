@@ -1028,28 +1028,40 @@ existing_plans:
     module: ued.plans
     name: motor_pv_scan
     parameters:
-    - kind:
+    - annotation:
+        type: str
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: pvname
-    - kind:
+    - annotation:
+        type: float
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: start
-    - kind:
+    - annotation:
+        type: float
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: stop
-    - kind:
+    - annotation:
+        type: int
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: num
-    - default: None
+    - annotation:
+        type: int
+      default: None
       kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: events
-    - default: None
+    - annotation:
+        type: bool
+      default: None
       kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
@@ -1061,28 +1073,40 @@ existing_plans:
     module: ued.plans
     name: pv_scan
     parameters:
-    - kind:
+    - annotation:
+        type: str
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: pvname
-    - kind:
+    - annotation:
+        type: float
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: start
-    - kind:
+    - annotation:
+        type: float
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: stop
-    - kind:
+    - annotation:
+        type: int
+      kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: num
-    - default: None
+    - annotation:
+        type: int
+      default: None
       kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1
       name: events
-    - default: None
+    - annotation:
+        type: bool
+      default: None
       kind:
         name: POSITIONAL_OR_KEYWORD
         value: 1

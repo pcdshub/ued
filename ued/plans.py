@@ -13,25 +13,39 @@ def get_daq():
     return daq
 
 
-def pv_scan(pvname, start, stop, num, events=None, record=None):
+def pv_scan(
+    pvname: str,
+    start: float,
+    stop: float,
+    num: int,
+    events: int = None,
+    record: bool = None,
+):
     """
     Scan over a PV
     """
     sig = EpicsSignal(pvname, name=pvname)
-    if events is None:
-        detectors = []
-    else:
+    if events:
         daq = get_daq()
         cfg = {'events': events}
         if record is not None:
             cfg['record'] = record
         yield from configure(daq, **cfg)
         detectors = [daq]
+    else:
+        detectors = []
     sig.wait_for_connection()
     return (yield from scan(detectors, sig, start, stop, num))
 
 
-def motor_pv_scan(pvname, start, stop, num, events=None, record=None):
+def motor_pv_scan(
+    pvname: str,
+    start: float,
+    stop: float,
+    num: int,
+    events: int = None,
+    record: bool = None,
+):
     """
     Scan over a motor record
     """
