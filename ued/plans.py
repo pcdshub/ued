@@ -35,7 +35,9 @@ def pv_scan(
     else:
         detectors = []
     sig.wait_for_connection()
-    return (yield from scan(detectors, sig, start, stop, num))
+    yield from scan(detectors, sig, start, stop, num)
+    if events:
+        yield from configure(daq, record=False)
 
 
 def motor_pv_scan(
@@ -50,14 +52,16 @@ def motor_pv_scan(
     Scan over a motor record
     """
     mot = EpicsMotor(pvname, name=pvname)
-    if events is None:
-        detectors = []
-    else:
+    if events:
         daq = get_daq()
         cfg = {'events': events}
         if record is not None:
             cfg['record'] = record
         yield from configure(daq, **cfg)
-        detectors = detectors + [daq]
+        detectors = [daq]
+    else:
+        detectors = []
     mot.wait_for_connection()
-    return (yield from scan(detectors, mot, start, stop, num))
+    yield from scan(detectors, mot, start, stop, num)
+    if events:
+        yield from configure(daq, record=False)
