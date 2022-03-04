@@ -40,4 +40,3 @@ with safe_load('Basic plans'):
     from .plans import pv_scan, motor_pv_scan
     bp.pv_scan = pv_scan
     bp.motor_pv_scan = motor_pv_scan
-

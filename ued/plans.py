@@ -4,6 +4,8 @@ from ophyd import EpicsMotor, EpicsSignal
 from bluesky.plans import scan
 from bluesky.plan_stubs import configure
 
+from ued.util import get_signal_by_pvname, get_motor_by_pvname
+
 
 def get_daq():
     """
@@ -24,10 +26,10 @@ def pv_scan(
     """
     Scan over a PV
     """
-    sig = EpicsSignal(pvname, name=pvname)
+    sig = get_signal_by_pvname(pvname)
     if events:
         daq = get_daq()
-        cfg = {'events': events}
+        cfg = {"events": events, "controls": [sig]}
         if record is not None:
             cfg['record'] = record
         yield from configure(daq, **cfg)
@@ -51,10 +53,10 @@ def motor_pv_scan(
     """
     Scan over a motor record
     """
-    mot = EpicsMotor(pvname, name=pvname)
+    mot = get_motor_by_pvname(pvname)
     if events:
         daq = get_daq()
-        cfg = {'events': events}
+        cfg = {"events": events, "controls": [mot]}
         if record is not None:
             cfg['record'] = record
         yield from configure(daq, **cfg)
