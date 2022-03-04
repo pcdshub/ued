@@ -15,6 +15,12 @@ def get_daq():
     return daq
 
 
+def get_begin_timeout(events: int):  #  -> float:
+    """Get the DAQ begin timeout for a number of events."""
+    return None
+    # return max((60.0, events / 120.0 + 1.0))
+
+
 def pv_scan(
     pvname: str,
     start: float,
@@ -29,7 +35,11 @@ def pv_scan(
     sig = get_signal_by_pvname(pvname)
     if events:
         daq = get_daq()
-        cfg = {"events": events, "controls": [sig]}
+        cfg = {
+            "events": events,
+            "controls": [sig],
+            "begin_timeout": get_begin_timeout(events),
+        }
         if record is not None:
             cfg['record'] = record
         yield from configure(daq, **cfg)
@@ -56,7 +66,11 @@ def motor_pv_scan(
     mot = get_motor_by_pvname(pvname)
     if events:
         daq = get_daq()
-        cfg = {"events": events, "controls": [mot]}
+        cfg = {
+            "events": events,
+            "controls": [mot],
+            "begin_timeout": get_begin_timeout(events),
+        }
         if record is not None:
             cfg['record'] = record
         yield from configure(daq, **cfg)
