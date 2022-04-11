@@ -9,6 +9,9 @@ with safe_load('Settings'):
     from bluesky.callbacks import LiveTable
     # Disable scientific notation, looks bad for example signal
     LiveTable._FMT_MAP['number'] = 'f'
+    from ued.db import daq
+    daq.begin_timeout_cfg.put(120)
+    daq.preconfig(begin_timeout=120)
 
 
 with safe_load('Disable Scan PVs'):
@@ -19,6 +22,17 @@ with safe_load('Disable Scan PVs'):
 with safe_load('Test PVs'):
     from ophyd import EpicsSignal
     test_pv = EpicsSignal('SIOC:SYS7:ML00:AO023', name='test_pv')
+
+
+with safe_load('Test Objects for Scans'):
+    from ophyd.signal import Signal
+    from pcdsdevices.sim import FastMotor
+    from ued.util import _motor_cache, _pv_cache
+    test_sig = Signal(name='test_sig')
+    test_mot = FastMotor(name='test_mot')
+    test_mot.prefix = 'TEST:MOT'
+    _pv_cache['TEST:SIG'] = test_sig
+    _motor_cache['TEST:MOT'] = test_mot
 
 
 with safe_load('BCTRL PVs'):

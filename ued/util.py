@@ -1,4 +1,5 @@
 import ophyd
+from ophyd.signal import EpicsSignal
 
 import ued.db
 
@@ -39,5 +40,5 @@ def get_signal_by_pvname(pvname: str) -> ophyd.EpicsSignal:
             return sig
 
     if pvname not in _pv_cache:
-        _pv_cache[pvname] = Motor(pvname, name=pvname)
+        _pv_cache[pvname] = EpicsSignal(pvname, name=pvname)
     return _pv_cache[pvname]
