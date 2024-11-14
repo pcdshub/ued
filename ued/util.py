@@ -4,10 +4,12 @@ from ophyd.signal import EpicsSignal
 import ued.db
 
 from pcdsdevices.epics_motor import EpicsMotorInterface as Motor
+from pcdsdevices.pv_positioner import OnePVMotor
 
 
 _motor_cache = {}
 _pv_cache = {}
+_pv_motor_cache = {}
 
 
 def get_motor_by_pvname(pvname: str) -> Motor:
@@ -19,8 +21,11 @@ def get_motor_by_pvname(pvname: str) -> Motor:
     """
     pvname = pvname.strip()
     for motor in ued.db.motors:
-        if motor.prefix == pvname:
-            return motor
+        try:
+            if motor.prefix == pvname:
+                return motor
+        except AttributeError:
+            ...
 
     if pvname not in _motor_cache:
         _motor_cache[pvname] = Motor(pvname, name=pvname)
@@ -42,3 +47,17 @@ def get_signal_by_pvname(pvname: str) -> ophyd.EpicsSignal:
     if pvname not in _pv_cache:
         _pv_cache[pvname] = EpicsSignal(pvname, name=pvname)
     return _pv_cache[pvname]
+
+
+def get_signal_motor_by_pvname(pvname: str) -> OnePVMotor:
+    """
+    Get a OnePVMotor given its PV name.
+    """
+    pvname = pvname.strip()
+
+    if pvname not in _pv_motor_cache:
+        _pv_motor_cache[pvname] = OnePVMotor(pvname, name=pvname)
+    return _pv_motor_cache[pvname]
+
+
+

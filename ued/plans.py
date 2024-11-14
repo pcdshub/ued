@@ -4,7 +4,7 @@ from ophyd import EpicsMotor, EpicsSignal
 from bluesky.plans import scan
 from bluesky.plan_stubs import configure
 
-from ued.util import get_signal_by_pvname, get_motor_by_pvname
+from ued.util import get_signal_motor_by_pvname, get_motor_by_pvname
 
 
 def get_daq():
@@ -32,13 +32,13 @@ def pv_scan(
     """
     Scan over a PV
     """
-    sig = get_signal_by_pvname(pvname)
+    sig = get_signal_motor_by_pvname(pvname)
     if events:
         daq = get_daq()
         cfg = {
             "events": events,
-            "controls": [sig],
-            "begin_timeout": get_begin_timeout(events),
+            "motors": [sig],
+            #"begin_timeout": get_begin_timeout(events),
         }
         if record is not None:
             cfg['record'] = record
@@ -68,8 +68,8 @@ def motor_pv_scan(
         daq = get_daq()
         cfg = {
             "events": events,
-            "controls": [mot],
-            "begin_timeout": get_begin_timeout(events),
+            "motors": [mot],
+            #"begin_timeout": get_begin_timeout(events),
         }
         if record is not None:
             cfg['record'] = record

@@ -10,8 +10,8 @@ with safe_load('Settings'):
     # Disable scientific notation, looks bad for example signal
     LiveTable._FMT_MAP['number'] = 'f'
     from ued.db import daq
-    daq.begin_timeout_cfg.put(120)
-    daq.preconfig(begin_timeout=120)
+    #daq.begin_timeout_cfg.put(120)
+    #daq.preconfig(begin_timeout=120)
 
 
 with safe_load('Disable Scan PVs'):
@@ -27,12 +27,15 @@ with safe_load('Test PVs'):
 with safe_load('Test Objects for Scans'):
     from ophyd.signal import Signal
     from pcdsdevices.sim import FastMotor
-    from ued.util import _motor_cache, _pv_cache
+    from ued.util import _motor_cache, _pv_cache, _pv_motor_cache
     test_sig = Signal(name='test_sig')
     test_mot = FastMotor(name='test_mot')
     test_mot.prefix = 'TEST:MOT'
+    test_sig_mot = FastMotor(name='test_sig_mot')
+    test_sig_mot.prefix = 'TEST:SIG'
     _pv_cache['TEST:SIG'] = test_sig
     _motor_cache['TEST:MOT'] = test_mot
+    _pv_motor_cache['TEST:SIG'] = test_sig_mot
 
 
 with safe_load('BCTRL PVs'):
@@ -54,3 +57,6 @@ with safe_load('Basic plans'):
     from .plans import pv_scan, motor_pv_scan
     bp.pv_scan = pv_scan
     bp.motor_pv_scan = motor_pv_scan
+
+with safe_load('rcc recirculator script utilities'):
+    from ued.UED_RCC import *
