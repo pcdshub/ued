@@ -2,65 +2,82 @@
 from ophyd import EpicsMotor, EpicsSignal
 
 from bluesky.plans import scan
+from bluesky.plan_stubs import configure
 
-
-class PhonyMotor:
-    """
-    Hack to help with current incomplete daq config handling
-    """
-    def __init__(self, signal):
-        self.sig = signal
-        self.name = signal.name
-
-    @property
-    def position(self):
-        return self.sig.get()
+from ued.util import get_signal_motor_by_pvname, get_motor_by_pvname
 
 
 def get_daq():
     """
     Find the daq object
     """
-    from ued.ued_daq import daq
+    from ued.db import daq
     return daq
 
 
-def config_daq_options(daq, motors, events):
-    """
-    Set the DAQ's active motors and events per step
-    """
-    if events is not None:
-        daq.readoutCount = events
-    daq.configure(motors=motors)
+def get_begin_timeout(events: int):  #  -> float:
+    """Get the DAQ begin timeout for a number of events."""
+    return None
+    # return max((60.0, events / 120.0 + 1.0))
 
 
-def config_in_scan(detectors, motors, events):
-    try:
+def pv_scan(
+    pvname: str,
+    start: float,
+    stop: float,
+    num: int,
+    events: int = None,
+    record: bool = None,
+):
+    """
+    Scan over a PV
+    """
+    sig = get_signal_motor_by_pvname(pvname)
+    if events:
         daq = get_daq()
-    except Exception:
-        return
-    if daq in detectors:
-        config_daq_options(daq, motors, events)
-
-
-def pv_scan(detectors, pvname, start, stop, num, events=None):
-    """
-    Scan over a PV as a UI test utility
-    """
-    sig = EpicsSignal(pvname, name=pvname)
-    mot = PhonyMotor(sig)
-    config_in_scan(detectors, [mot], events)
-
+        cfg = {
+            "events": events,
+            "motors": [sig],
+            #"begin_timeout": get_begin_timeout(events),
+        }
+        if record is not None:
+            cfg['record'] = record
+        yield from configure(daq, **cfg)
+        detectors = [daq]
+    else:
+        detectors = []
     sig.wait_for_connection()
-    return (yield from scan(detectors, sig, start, stop, num))
+    yield from scan(detectors, sig, start, stop, num)
+    if events:
+        yield from configure(daq, record=False)
 
 
-def motor_pv_scan(detectors, pvname, start, stop, num, events=None):
+def motor_pv_scan(
+    pvname: str,
+    start: float,
+    stop: float,
+    num: int,
+    events: int = None,
+    record: bool = None,
+):
     """
-    Scan over a motor record as a UI test utility
+    Scan over a motor record
     """
-    mot = EpicsMotor(pvname, name=pvname)
-    config_in_scan(detectors, [mot], events)
-
+    mot = get_motor_by_pvname(pvname)
+    if events:
+        daq = get_daq()
+        cfg = {
+            "events": events,
+            "motors": [mot],
+            #"begin_timeout": get_begin_timeout(events),
+        }
+        if record is not None:
+            cfg['record'] = record
+        yield from configure(daq, **cfg)
+        detectors = [daq]
+    else:
+        detectors = []
     mot.wait_for_connection()
-    return (yield from scan(detectors, mot, start, stop, num))
+    yield from scan(detectors, mot, start, stop, num)
+    if events:
+        yield from configure(daq, record=False)
