@@ -48,8 +48,8 @@ def pv_scan(
         detectors = []
     sig.wait_for_connection()
     yield from scan(detectors, sig, start, stop, num)
-    if events:
-        yield from configure(daq, record=False)
+    #if events:
+    #    yield from configure(daq, record=False)
 
 
 def motor_pv_scan(
@@ -79,5 +79,5 @@ def motor_pv_scan(
         detectors = []
     mot.wait_for_connection()
     yield from scan(detectors, mot, start, stop, num)
-    if events:
-        yield from configure(daq, record=False)
+    #if events:
+    #    yield from configure(daq, record=False)
