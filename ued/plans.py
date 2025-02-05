@@ -1,8 +1,13 @@
 # Custom plans for use in ued scan gui
-from ophyd import EpicsMotor, EpicsSignal
+from __future__ import annotations
+
+from ophyd.epics_motor import EpicsMotor
+from ophyd.pv_positioner import PVPositioner
 
 from bluesky.plans import scan
 from bluesky.plan_stubs import configure
+from bluesky.preprocessors import stub_wrapper, run_decorator, stage_decorator
+
 
 from ued.util import get_signal_motor_by_pvname, get_motor_by_pvname
 
@@ -15,41 +20,27 @@ def get_daq():
     return daq
 
 
-def get_begin_timeout(events: int):  #  -> float:
-    """Get the DAQ begin timeout for a number of events."""
-    return None
-    # return max((60.0, events / 120.0 + 1.0))
-
-
 def pv_scan(
     pvname: str,
     start: float,
     stop: float,
     num: int,
-    events: int = None,
-    record: bool = None,
+    events: int | None = None,
+    group_mask: int | None = None,
+    record: bool | None = None,
 ):
     """
     Scan over a PV
     """
-    sig = get_signal_motor_by_pvname(pvname)
-    if events:
-        daq = get_daq()
-        cfg = {
-            "events": events,
-            "motors": [sig],
-            #"begin_timeout": get_begin_timeout(events),
-        }
-        if record is not None:
-            cfg['record'] = record
-        yield from configure(daq, **cfg)
-        detectors = [daq]
-    else:
-        detectors = []
-    sig.wait_for_connection()
-    yield from scan(detectors, sig, start, stop, num)
-    #if events:
-    #    yield from configure(daq, record=False)
+    yield from inner_pv_scan(
+        motor=get_signal_motor_by_pvname(pvname),
+        start=start,
+        stop=stop,
+        num=num,
+        events=events,
+        group_mask=group_mask,
+        record=record,
+    )
 
 
 def motor_pv_scan(
@@ -57,19 +48,41 @@ def motor_pv_scan(
     start: float,
     stop: float,
     num: int,
-    events: int = None,
-    record: bool = None,
+    events: int | None = None,
+    group_mask: int | None = None,
+    record: bool | None = None,
 ):
     """
     Scan over a motor record
     """
-    mot = get_motor_by_pvname(pvname)
+    yield from inner_pv_scan(
+        motor=get_motor_by_pvname(pvname),
+        start=start,
+        stop=stop,
+        num=num,
+        events=events,
+        group_mask=group_mask,
+        record=record,
+    )
+
+
+def inner_pv_scan(
+    motor: EpicsMotor | PVPositioner,
+    start: float,
+    stop: float,
+    num: int,
+    subscans: int = 1,
+    and_back: bool = False,
+    events: int | None = None,
+    group_mask: int | None = None,
+    record: bool | None = None,
+):
     if events:
         daq = get_daq()
         cfg = {
+            "motors": [motor],
             "events": events,
-            "motors": [mot],
-            #"begin_timeout": get_begin_timeout(events),
+            "group_mask": group_mask,
         }
         if record is not None:
             cfg['record'] = record
@@ -77,7 +90,14 @@ def motor_pv_scan(
         detectors = [daq]
     else:
         detectors = []
-    mot.wait_for_connection()
-    yield from scan(detectors, mot, start, stop, num)
-    #if events:
-    #    yield from configure(daq, record=False)
+    motor.wait_for_connection()
+
+    @stage_decorator(detectors + [motor])
+    @run_decorator(md={})
+    def inner(start: int, stop: int):
+        for _ in range(subscans):
+            yield from stub_wrapper(scan(detectors, motor, start, stop, num))
+            if and_back:
+                start, stop = stop, start
+
+    yield from inner(start=start, stop=stop)
