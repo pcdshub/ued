@@ -1,0 +1,14 @@
+# default group
+* @pcdshub/ued-members
+
+# language-specific group(s)
+## PYTHON files
+*.py @pcdshub/python-reviewers @pcdshub/ued-members
+*.pyi @pcdshub/python-reviewers @pcdshub/ued-members
+*.pyc @pcdshub/python-reviewers @pcdshub/ued-members
+*.pyw @pcdshub/python-reviewers @pcdshub/ued-members
+*.pyx @pcdshub/python-reviewers @pcdshub/ued-members
+*.pyd @pcdshub/python-reviewers @pcdshub/ued-members
+
+# github folder holds administrative files
+.github/** @pcdshub/software-admin
